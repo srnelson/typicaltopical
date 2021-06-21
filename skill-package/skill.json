@@ -1,0 +1,139 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Match Expert A.I. textual analysis targets for topics and behavior and emotion types. Have fun! Score points!",
+          "examplePhrases": [
+            "Alexa open Typical Topical",
+            "Alexa, tell Typical Topical to start the game",
+            "Alexa, ask Typical Topical for help"
+          ],
+          "keywords": [
+            "story",
+            "stories",
+            "emotion",
+            "emotional",
+            "analysis",
+            "emotions",
+            "mood",
+            "topic",
+            "knowledge",
+            "behavior",
+            "expertise",
+            "linguistics",
+            "understanding"
+          ],
+          "name": "Typical Topical",
+          "description": "Typical Topical is a demonstration game that challenges you to say things that meet a target you are given for topic, behavior and emotion. You score based on how closely you meet those targets. The skill uses textual analysis from Expert.ai to detect and determine the topic, the type of behavior described and the type of emotion expressed in the statements you make.\n\nLEVELS:\nYou can choose Easy, Medium, or Hard, to be given one, two, or three targets respectively. Say 'Easy', 'Medium' or Hard' to select a level.\n\nSCORING:\nIn each round, you will be dealt a topic, a behavior to describe, and an emotion to express.\n• Topic\nIf Expert.ai detects the exact target topic in your statement you get 10 points.\n• Behavior\nIf it detects that you incorporated the exact target behavior, you get 10 points. If you incorporate a behavior from the same general group and intensity of the target behavior, you get 4 points. If you incorporate a behavior from the same general group as the target behavior, you get 2 points.\n• Emotion\nIf it detects that you expressed exact target emotion, you get 10 points. If it detects an emotion from the same emotion group, you get 4 points.\nScoring for any category is halved if you use the exact target word (topic, behavior or emotion).\nPlease do not be frustrated if the skill does not detect something that you think should be obvious. It happens. Just as in 'Whose Line is it Anyway'... the points don't matter.\n\nNOTES:\n• If you say 'Repeat' after being dealt your targets, you can hear them again. Use this in case you are tongue-tied and need a bit more time to make up your statement.\n• Sometimes if your statement is too long, Alexa will treat it as though you said nothing at all, and ask you to say something again. Either say something a little shorter, or say 'Repeat' to repeat the targets.\n• If you say 'Repeat' after you are shown the results, you will get the same targets to try again, but you won't score. Use this to practice.\n• If you say 'Help', you will hear more details, and receive a card in your Alexa app that has all this information.\n• If you say 'Goodbye', you'll hear your final score before you leave.\n\nFor more information on Expert.ai, visit https://Expert.ai\nThe list of behavioral and emotion traits can be found at https://docs.expert.ai/nlapi/v2/reference/categories/\nThe list of detectable topics can be found at https://docs.expert.ai/nlapi/v2/reference/topics/\n",
+          "smallIconUri": "file://assets/en-US_smallIcon.png",
+          "largeIconUri": "file://assets/en-US_largeIcon.png"
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "This skill is for submission to a Devpost hackathon with a deadline of June 22, 2021, so timely certification is appreciated. The Expert.ai APIs are used per the Expert.ai terms of service. No user data is saved or used. NOTE: Name was changed per certification feedback.",
+      "category": "EDUCATIONAL_GAMES",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": ""
+        },
+        "interfaces": [
+          {
+            "supportedViewports": [
+              {
+                "minHeight": 480,
+                "mode": "HUB",
+                "shape": "ROUND",
+                "maxHeight": 480,
+                "minWidth": 480,
+                "maxWidth": 480
+              },
+              {
+                "minHeight": 600,
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "maxHeight": 600,
+                "minWidth": 1024,
+                "maxWidth": 1024
+              },
+              {
+                "minHeight": 800,
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "maxHeight": 800,
+                "minWidth": 1280,
+                "maxWidth": 1280
+              },
+              {
+                "minHeight": 540,
+                "mode": "TV",
+                "shape": "RECTANGLE",
+                "maxHeight": 540,
+                "minWidth": 960,
+                "maxWidth": 960
+              },
+              {
+                "minHeight": 480,
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "maxHeight": 480,
+                "minWidth": 960,
+                "maxWidth": 960
+              },
+              {
+                "mode": "HUB",
+                "shape": "ROUND",
+                "minWidth": 100,
+                "maxWidth": 599,
+                "minHeight": 100,
+                "maxHeight": 599
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "minHeight": 100,
+                "maxHeight": 599,
+                "minWidth": 960,
+                "maxWidth": 1279
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "minHeight": 600,
+                "maxHeight": 959,
+                "minWidth": 960,
+                "maxWidth": 1279
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE",
+                "minHeight": 600,
+                "maxHeight": 1279,
+                "minWidth": 1280,
+                "maxWidth": 1920
+              }
+            ],
+            "type": "ALEXA_PRESENTATION_APL"
+          }
+        ]
+      }
+    },
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "locales": {
+        "en-US": {
+          "termsOfUseUrl": "",
+          "privacyPolicyUrl": ""
+        }
+      },
+      "containsAds": false,
+      "isExportCompliant": true,
+      "isChildDirected": false,
+      "usesPersonalInfo": false
+    }
+  }
+}

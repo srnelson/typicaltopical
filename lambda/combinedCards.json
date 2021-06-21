@@ -1,0 +1,923 @@
+{
+  "type": "APL",
+  "version": "1.4",
+  "settings": {},
+  "theme": "dark",
+  "import": [
+    {
+      "name": "alexa-layouts",
+      "version": "1.2.0"
+    },
+    {
+      "name": "alexa-styles",
+      "version": "1.1.0"
+    },
+    {
+      "name": "alexa-viewport-profiles",
+      "version": "1.2.0"
+    }
+  ],
+  "resources": [],
+  "styles": {},
+  "onMount": [],
+  "graphics": {},
+  "commands": {},
+  "layouts": {},
+  "mainTemplate": {
+    "parameters": ["payload"],
+    "items": [
+      {
+        "type": "Container",
+        "id": "Globals",
+        "width": "100vw",
+        "height": "100vh",
+        "direction": "column",
+        "bind": [
+          {
+            "name": "Score",
+            "value": "${payload.targetData.properties.score}"
+          },
+          {
+            "name": "detectedValues",
+            "value": {
+              "detectedTopic": "",
+              "detectedBehavior": "",
+              "detectedEmotion": "",
+              "topicColor": "",
+              "behaviorColor": "",
+              "emotionColor": "",
+              "Score": "${payload.targetData.properties.score}",
+              "results": false
+            }
+          },
+          {
+            "name": "detectedTopic",
+            "value": ""
+          },
+          {
+            "name": "detectedBehavior",
+            "value": ""
+          },
+          {
+            "name": "detectedEmotion",
+            "value": ""
+          },
+          {
+            "name": "targetTopic",
+            "value": "${payload.targetData.properties.targets.targetTopic}"
+          },
+          {
+            "name": "targetBehavior",
+            "value": "${payload.targetData.properties.targets.targetBehavior}"
+          },
+          {
+            "name": "targetEmotion",
+            "value": "${payload.targetData.properties.targets.targetEmotion}"
+          },
+          {
+            "name": "topicColor",
+            "value": ""
+          },
+          {
+            "name": "behaviorColor",
+            "value": ""
+          },
+          {
+            "name": "emotionColor",
+            "value": ""
+          },
+          {
+            "name": "hint",
+            "value": "${payload.targetData.properties.transformedHintText}"
+          }
+        ],
+
+        "items": [
+          {
+            "type": "AlexaBackground"
+          },
+          {
+            "when": "${@viewportShape == @viewportShapeRound}",
+            "type": "Text",
+            "textAlign": "center",
+            "fontSize": "22dp",
+            "paddingTop": "10vh",
+            "text": "SCORE: ${detectedValues.Score}${topicColor}"
+          },
+          {
+            "when": "${@viewportShape != @viewportShapeRound}",
+            "type": "Text",
+            "paddingLeft": "2vw",
+            "text": "SCORE: ${detectedValues.Score}${topicColor}"
+          },
+          {
+            "type": "Container",
+            "width": "100vw",
+            "height": "67vh",
+            "alignItems": "center",
+            "justifyContent": "center",
+            "paddingLeft": "8vw",
+            "direction": "row",
+            "items": [
+              {
+                "type": "Container",
+                "when": "${targetTopic != ''}",
+                "onMount": [
+                  {
+                    "type": "Sequential",
+                    "commands": [
+                      {
+                        "type": "AnimateItem",
+                        "componentId": "tFront",
+                        "duration": 250,
+                        "delay": 2000,
+                        "value": [
+                          {
+                            "property": "transform",
+                            "from": [
+                              {
+                                "scaleX": 1
+                              }
+                            ],
+                            "to": [
+                              {
+                                "scaleX": 0
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "AnimateItem",
+                        "componentId": "tBack",
+                        "duration": 250,
+                        "value": [
+                          {
+                            "property": "transform",
+                            "from": [
+                              {
+                                "scaleX": 0
+                              }
+                            ],
+                            "to": [
+                              {
+                                "scaleX": 1
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "item": {
+                  "type": "Container",
+                  "width": "${viewport.width/3}",
+                  "height": "${viewport.width/3}",
+                  "items": [
+                    {
+                      "position": "absolute",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "backgroundColor": "purple",
+                      "borderRadius": "10dp",
+                      "id": "tBack",
+                      "width": "75%",
+                      "height": "100%",
+                      "transform": [
+                        {
+                          "scaleX": 0
+                        }
+                      ],
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "T",
+                            "paddingLeft": "1vw"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "T"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "@fontSizeXSmall",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "<i>Target Topic:</i><br>${targetTopic}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Target Topic:</i><br>${targetTopic}"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "🎯"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "🎯"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "position": "absolute",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "borderRadius": "10dp",
+                      "paddingTop": 0,
+                      "paddingBottom": 0,
+                      "paddingLeft": 0,
+                      "backgroundColor": "blue",
+                      "id": "tFront",
+                      "width": "75%",
+                      "height": "100%",
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "T"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "T"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "@fontSizeLarge",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "Target<br>Topic"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "Target<br>Topic"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "🎯"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "🎯"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "position": "absolute",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "borderRadius": "10dp",
+                      "paddingTop": 0,
+                      "paddingBottom": 0,
+                      "backgroundColor": "${detectedValues.topicColor}",
+                      "id": "tResults",
+                      "width": "75%",
+                      "height": "100%",
+                      "transform": [
+                        {
+                          "scaleX": 0
+                        }
+                      ],
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "T",
+                            "paddingLeft": "@spacing2XSmall"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "T"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacingMedium",
+                            "text": "<i>Target Topic:</i><br>${targetTopic}<br>"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Target Topic:</i><br>${targetTopic}<br>"
+                          },
+
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacingMedium",
+                            "text": "<i>Detected:</i><br>${detectedValues.detectedTopic}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Detected:</i><br>${detectedValues.detectedTopic}"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "${detectedValues.topicIcon}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "${detectedValues.topicIcon}"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Container",
+                "when": "${targetBehavior != ''}",
+                "onMount": [
+                  {
+                    "type": "Sequential",
+                    "commands": [
+                      {
+                        "type": "AnimateItem",
+                        "componentId": "bFront",
+                        "duration": 250,
+                        "delay": 4000,
+                        "value": [
+                          {
+                            "property": "transform",
+                            "from": [
+                              {
+                                "scaleX": 1
+                              }
+                            ],
+                            "to": [
+                              {
+                                "scaleX": 0
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "AnimateItem",
+                        "componentId": "bBack",
+                        "duration": 250,
+                        "value": [
+                          {
+                            "property": "transform",
+                            "from": [
+                              {
+                                "scaleX": 0
+                              }
+                            ],
+                            "to": [
+                              {
+                                "scaleX": 1
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "item": {
+                  "type": "Container",
+                  "width": "${viewport.width/3}",
+                  "height": "${viewport.width/3}",
+                  "items": [
+                    {
+                      "position": "absolute",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "backgroundColor": "purple",
+                      "borderRadius": "10dp",
+                      "id": "bBack",
+                      "width": "75%",
+                      "height": "100%",
+                      "transform": [
+                        {
+                          "scaleX": 0
+                        }
+                      ],
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "B",
+                            "paddingLeft": "1vw"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "B"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "@fontSizeXSmall",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "<i>Target Behavior:</i><br>${targetBehavior}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Target Behavior:</i><br>${targetBehavior}"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "🎯"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "🎯"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "position": "relative",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "borderRadius": "10dp",
+                      "paddingTop": 0,
+                      "paddingBottom": 0,
+                      "paddingLeft": 0,
+                      "backgroundColor": "blue",
+                      "id": "bFront",
+                      "width": "75%",
+                      "height": "100%",
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "B"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "B"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "@fontSizeLarge",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "Target Behavior"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "Target Emotion"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "🎯"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "🎯"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "position": "absolute",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "borderRadius": "10dp",
+                      "paddingTop": 0,
+                      "paddingBottom": 0,
+                      "backgroundColor": "${detectedValues.behaviorColor}",
+                      "id": "bResults",
+                      "width": "75%",
+                      "height": "100%",
+                      "transform": [
+                        {
+                          "scaleX": 0
+                        }
+                      ],
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "B",
+                            "paddingLeft": "@spacing2XSmall"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "B"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacingMedium",
+                            "text": "<i>Target Behavior:</i><br>${targetBehavior}<br>"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Target Behavior:</i><br>${targetBehavior}<br>"
+                          },
+
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacingMedium",
+                            "text": "<i>Detected:</i><br>${detectedValues.detectedBehavior}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Detected:</i><br>${detectedValues.detectedBehavior}"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "${detectedValues.behaviorIcon}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "${detectedValues.behaviorIcon}"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Container",
+                "when": "${targetEmotion != ''}",
+                "onMount": [
+                  {
+                    "type": "Sequential",
+                    "commands": [
+                      {
+                        "type": "AnimateItem",
+                        "componentId": "eFront",
+                        "duration": 250,
+                        "delay": 6000,
+                        "value": [
+                          {
+                            "property": "transform",
+                            "from": [
+                              {
+                                "scaleX": 1
+                              }
+                            ],
+                            "to": [
+                              {
+                                "scaleX": 0
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "AnimateItem",
+                        "componentId": "eBack",
+                        "duration": 250,
+                        "value": [
+                          {
+                            "property": "transform",
+                            "from": [
+                              {
+                                "scaleX": 0
+                              }
+                            ],
+                            "to": [
+                              {
+                                "scaleX": 1
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "item": {
+                  "type": "Container",
+                  "width": "${viewport.width/3}",
+                  "height": "${viewport.width/3}",
+                  "items": [
+                    {
+                      "position": "absolute",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "backgroundColor": "purple",
+                      "borderRadius": "10dp",
+                      "id": "eBack",
+                      "width": "75%",
+                      "height": "100%",
+                      "transform": [
+                        {
+                          "scaleX": 0
+                        }
+                      ],
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "E",
+                            "paddingLeft": "1vw"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "E"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "@fontSizeXSmall",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "<i>Target Emotion:</i><br>${targetEmotion}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Target Emotion:</i><br>${targetEmotion}"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "🎯"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "🎯"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "position": "relative",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "borderRadius": "10dp",
+                      "paddingTop": 0,
+                      "paddingBottom": 0,
+                      "paddingLeft": 0,
+                      "backgroundColor": "blue",
+                      "id": "eFront",
+                      "width": "75%",
+                      "height": "100%",
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "E"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "E"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "@fontSizeLarge",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "Target Emotion"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacing2XSmall",
+                            "text": "Target Emotion"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "🎯"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "🎯"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "position": "absolute",
+                      "top": 0,
+                      "left": 0,
+                      "type": "Frame",
+                      "borderRadius": "10dp",
+                      "paddingTop": 0,
+                      "paddingBottom": 0,
+                      "backgroundColor": "${detectedValues.emotionColor}",
+                      "id": "eResults",
+                      "width": "75%",
+                      "height": "100%",
+                      "transform": [
+                        {
+                          "scaleX": 0
+                        }
+                      ],
+                      "item": {
+                        "type": "Container",
+                        "width": "100%",
+                        "height": "100%",
+                        "justifyContent": "spaceBetween",
+                        "items": [
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "50dp",
+                            "text": "E",
+                            "paddingLeft": "@spacing2XSmall"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "30dp",
+                            "text": "E"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacingMedium",
+                            "text": "<i>Target Emotion:</i><br>${targetEmotion}<br>"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Target Emotion:</i><br>${targetEmotion}<br>"
+                          },
+
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "18dp",
+                            "paddingLeft": "@spacingMedium",
+                            "text": "<i>Detected:</i><br>${detectedValues.detectedEmotion}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "fontSize": "12dp",
+                            "paddingLeft": "1vw",
+                            "text": "<i>Detected:</i><br>${detectedValues.detectedEmotion}"
+                          },
+                          {
+                            "when": "${@viewportShape != @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "text": "${detectedValues.emotionIcon}"
+                          },
+                          {
+                            "when": "${@viewportShape == @viewportShapeRound}",
+                            "type": "Text",
+                            "textAlign": "right",
+                            "fontSize": "18dp",
+                            "text": "${detectedValues.emotionIcon}"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "type": "APL",
+  "version": "1.4",
+  "settings": {
+    "idleTimeout": 300000
+  },
+  "theme": "dark",
+  "import": [
+    {
+      "name": "alexa-layouts",
+      "version": "1.2.0"
+    },
+    {
+      "name": "alexa-styles",
+      "version": "1.1.0"
+    },
+    {
+      "name": "alexa-viewport-profiles",
+      "version": "1.2.0"
+    }
+  ],
+  "background": "#333333",
+  "resources": [
+    {
+      "dimensions": {
+        "cardWidth": 300,
+        "cardHeight": 422
+      }
+    }
+  ],
+  "styles": {},
+  "graphics": {},
+  "commands": {
+    "ThrowCard": {
+      "parameters": [
+        "index",
+        {
+          "name": "shouldBeNegative",
+          "default": "${Math.round((Math.random() + 0.25) * 1) == 1}"
+        }
+      ],
+      "commands": [
+        {
+          "type": "AnimateItem",
+          "componentId": "card${index}",
+          "easing": "ease-in-out",
+          "duration": "${Math.round((Math.random() * (600 - 400))) + 400}",
+          "value": [
+            {
+              "property": "transform",
+              "from": [
+                {
+                  "translateX": 0
+                },
+                {
+                  "translateY": "${viewport.height}"
+                },
+                {
+                  "rotate": 0
+                }
+              ],
+              "to": [
+                {
+                  "translateX": "-${(Math.random() + 0.25) * 50}"
+                },
+                {
+                  "translateY": "${(viewport.height / 2) - (@cardHeight / 2)}"
+                },
+                {
+                  "rotate": "${Math.floor(Math.random()*100)%2 ? '${Math.floor((Math.random()+0.25) * -60)}' : '${Math.floor((Math.random()+0.25) * 60)}'}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "layouts": {},
+  "mainTemplate": {
+    "parameters": ["payload"],
+    "items": [
+      {
+        "type": "Container",
+        "width": "100vw",
+        "height": "100vh",
+        "justifyContent": "center",
+        "items": [
+          {
+            "type": "Container",
+            "width": "100%",
+            "height": "90%",
+            "data": "${payload.launchData.properties.targets}",
+            "items": [
+              {
+                "type": "Container",
+                "position": "absolute",
+                "width": "@cardWidth",
+                "height": "@cardHeight",
+                "transform": [
+                  {
+                    "translateY": "${viewport.height}"
+                  }
+                ],
+                "onMount": [
+                  {
+                    "type": "Idle",
+                    "delay": "${(i * 2) * 1000}"
+                  },
+                  {
+                    "type": "ThrowCard",
+                    "index": "${i}"
+                  }
+                ],
+                "id": "card${i}",
+                "bind": [
+                  {
+                    "name": "i",
+                    "value": "${index}"
+                  }
+                ],
+                "left": "${viewport.width / 2 - (@cardWidth / 2)}",
+                "items": [
+                  {
+                    "type": "Frame",
+                    "width": "100%",
+                    "height": "100%",
+                    "borderWidth": 1,
+                    "backgroundColor": "${payload.launchData.properties.targets[i][2]}",
+                    "borderColor": "rgba(0, 0, 0, .25)",
+                    "borderRadius": 30
+                  },
+                  {
+                    "type": "Container",
+                    "width": "100%",
+                    "height": "100%",
+                    "justifyContent": "spaceBetween",
+                    "position": "absolute",
+                    "items": [
+                      {
+                        "type": "Text",
+                        "fontSize": "50dp",
+                        "text": "${payload.launchData.properties.targets[i][3]}",
+                        "paddingLeft": "1vw"
+                      },
+                      {
+                        "type": "Text",
+                        "fontSize": "@fontSizeXSmall",
+                        "paddingLeft": "@spacing2XSmall",
+                        "text": "<i>Target ${payload.launchData.properties.targets[i][0]}:</i><br>${payload.launchData.properties.targets[i][1]}"
+                      },
+                      {
+                        "type": "Text",
+                        "textAlign": "right",
+                        "text": "🎯"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "AlexaFooter",
+            "hintText": "${payload.launchData.properties.transformedHintText}"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "APL",
+  "version": "1.6",
+  "mainTemplate": {
+    "parameters": ["payload"],
+    "items": [
+      {
+        "type": "Container",
+        "width": "100%",
+        "height": "100%",
+        "justifyContent": "center",
+        "alignItems": "center",
+
+        "items": [
+          {
+            "type": "Text",
+            "text": "Final Score: ${payload.endData.properties.score}"
+          }
+        ]
+      }
+    ]
+  }
+}
